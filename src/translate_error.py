@@ -1,7 +1,7 @@
 import pandas as pd
 
 # load dataset
-data = pd.read_csv("data/error_dataset.csv")
+data = pd.read_csv("../data/error_dataset.csv")
 
 def translate_error(error_message):
     for i, row in data.iterrows():
