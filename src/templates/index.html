@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Python Debugging Assistant</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f7fb;
+    margin:40px;
+}
+
+h1{
+    color:#333;
+}
+
+textarea{
+    width:700px;
+    height:220px;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-family:monospace;
+}
+
+button{
+    margin-top:15px;
+    padding:10px 18px;
+    border:none;
+    background:#4a7cff;
+    color:white;
+    font-size:15px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#2e5ee6;
+}
+
+.result-box{
+    margin-top:30px;
+    padding:20px;
+    border-radius:10px;
+    background:white;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    width:700px;
+}
+
+.section{
+    margin-top:20px;
+    padding:15px;
+    border-radius:8px;
+}
+
+.cause{
+    background:#ffe9e9;
+}
+
+.fix{
+    background:#e8f7ff;
+}
+
+.explanation{
+    background:#eef3ff;
+}
+
+</style>
+
+</head>
+<script>
+function getFix(){
+
+fetch("/fix",{
+    method:"POST",
+    headers:{
+        "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+        code: document.querySelector("textarea").value
+    })
+})
+.then(response => response.json())
+.then(data => {
+
+document.getElementById("fix-box").style.display="block";
+document.getElementById("fix-box").innerText=data.fix;
+
+});
+
+}
+</script>
+
+<body>
+
+<h1>AI Debugging Assistant</h1>
+
+<form method="post">
+
+<textarea name="code">
+{{code}}
+</textarea>
+
+<br>
+
+<button type="submit">Run & Debug</button>
+
+</form>
+
+
+{% if explanation %}
+
+<div class="result-box">
+
+<h2>Error Cause</h2>
+<div class="section cause">
+{{cause}}
+</div>
+
+<h2>What To Do</h2>
+<div class="section fix">
+{{fix}}
+</div>
+
+<h2>AI Explanation</h2>
+<div class="section explanation">
+{{explanation}}
+</div>
+
+<br>
+
+<button onclick="getFix()">Generate Corrected Code</button>
+
+<div id="fix-box" class="section fix" style="display:none; margin-top:15px;"></div>
+
+</div>
+
+{% endif %}
+
+</body>
+</html>
